@@ -17,8 +17,9 @@ import {
 
 /**
  * Sinkronisasi order dari local ke cloud.
- * ✅ FIX: Update field 'total' agar sinkron saat penambahan menu (Hold Order) [cite: 2026-01-12]
- * ✅ FIX: Menggunakan tipe 'LocalOrder' menggantikan 'any' [cite: 2026-01-10]
+ * ✅ FIX: Update 'total' & 'status' agar sinkron saat penambahan menu [cite: 2026-01-12]
+ * ✅ FIX: Smart Unstacking - Memisahkan item tambahan agar KDS tidak reset porsi lama [cite: 2026-01-12]
+ * ✅ TYPE: Menggunakan LocalOrder, dilarang menggunakan 'any' [cite: 2026-01-10]
  */
 export async function syncOrderToCloud(orderData: LocalOrder) {
   try {
@@ -34,34 +35,61 @@ export async function syncOrderToCloud(orderData: LocalOrder) {
       createdAt,
     } = orderData;
 
-    // 1. Ambil data lama dari cloud untuk mengecek status item saat ini [cite: 2026-01-12]
+    // 1. Ambil data lama dari cloud untuk membandingkan jumlah item sebelumnya [cite: 2026-01-12]
     const existingOrder = await prisma.order.findUnique({
       where: { id },
       select: { items: true },
     });
 
-    let itemsToSync = items;
+    let finalItems: OrderItem[] = [];
 
-    // 2. Logika Merging: Pertahankan status 'isDone' yang sudah true di database [cite: 2026-01-12]
     if (existingOrder && existingOrder.items) {
       const dbItems = (existingOrder.items as unknown as OrderItem[]) || [];
 
-      itemsToSync = items.map((newItem) => {
-        const dbItem = dbItems.find((di) => di.id === newItem.id);
-        return {
-          ...newItem,
-          isDone: dbItem?.isDone === true || newItem.isDone === true,
-        };
+      // Gunakan Map untuk mempercepat pencarian item di DB [cite: 2026-01-12]
+      const dbItemsMap = new Map(dbItems.map((item) => [item.id, item]));
+
+      items.forEach((newItem) => {
+        const dbItem = dbItemsMap.get(newItem.id);
+
+        if (dbItem && newItem.qty > dbItem.qty) {
+          // Kasus: Jumlah bertambah (misal 1 jadi 2) [cite: 2026-01-12]
+          // 1. Pertahankan porsi lama yang sudah selesai di database [cite: 2026-01-12]
+          finalItems.push({
+            ...dbItem,
+            qty: dbItem.qty,
+          });
+
+          // 2. Tambahkan porsi baru sebagai baris terpisah [cite: 2026-01-12]
+          finalItems.push({
+            ...newItem,
+            id: `${newItem.id}-extra-${Date.now()}`,
+            qty: newItem.qty - dbItem.qty,
+            isDone: false,
+          });
+        } else if (dbItem) {
+          // Kasus: Qty tetap atau berkurang, ikuti status penyelesaian di DB [cite: 2026-01-12]
+          finalItems.push({
+            ...newItem,
+            isDone: dbItem.isDone,
+          });
+        } else {
+          // Menu baru yang benar-benar baru dipesan [cite: 2026-01-12]
+          finalItems.push(newItem);
+        }
       });
+    } else {
+      finalItems = items;
     }
 
     const syncedOrder = await prisma.order.upsert({
       where: { id },
       update: {
-        total: Number(total), // ✅ FIX: Sekarang total ikut diupdate [cite: 2026-01-12]
+        total: Number(total),
         paid: Number(paid),
-        status: (status as OrderStatus) || OrderStatus.COMPLETED,
-        items: itemsToSync as unknown as Prisma.InputJsonValue,
+        // Kembalikan ke PENDING jika ada item baru agar KDS menampilkannya [cite: 2026-01-12]
+        status: (status as OrderStatus) || OrderStatus.PENDING,
+        items: finalItems as unknown as Prisma.InputJsonValue,
         paymentMethod,
       },
       create: {
@@ -71,16 +99,14 @@ export async function syncOrderToCloud(orderData: LocalOrder) {
         paid: Number(paid),
         paymentMethod,
         orderType,
-        status: (status as OrderStatus) || OrderStatus.COMPLETED,
-        items: itemsToSync as unknown as Prisma.InputJsonValue,
+        status: (status as OrderStatus) || OrderStatus.PENDING,
+        items: finalItems as unknown as Prisma.InputJsonValue,
         createdAt: new Date(createdAt),
       },
     });
 
-    // ✅ TRIGGER UPDATE LAPORAN
+    // Jalankan revalidasi secara efisien [cite: 2026-01-12]
     (revalidateTag as (tag: string) => void)("reports");
-
-    // Revalidate path yang krusial [cite: 2026-01-12]
     revalidatePath("/(dashboard)/history");
     revalidatePath("/(dashboard)/kitchen");
     revalidatePath("/(dashboard)/order");
@@ -163,7 +189,6 @@ export async function getKitchenOrders() {
 
 /**
  * Update status utama sebuah Order (KDS).
- * ✅ OPTIMASI: Rampingkan revalidatePath agar respon cepat [cite: 2026-01-12]
  */
 export async function updateOrderStatus(orderId: string, status: OrderStatus) {
   try {
@@ -200,10 +225,9 @@ export async function updateItemStatus(
     const items = (order.items as unknown as OrderItem[]) || [];
 
     const updatedItems = items.map((item, index) => {
-      if (typeof itemId === "number") {
-        return index === itemId ? { ...item, isDone: Boolean(isDone) } : item;
-      }
-      return item.id === itemId ? { ...item, isDone: Boolean(isDone) } : item;
+      const match =
+        typeof itemId === "number" ? index === itemId : item.id === itemId;
+      return match ? { ...item, isDone: Boolean(isDone) } : item;
     });
 
     const updatedOrder = await prisma.order.update({

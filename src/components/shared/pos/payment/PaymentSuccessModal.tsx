@@ -7,7 +7,7 @@ import { CheckCircle2, Home, Printer, Loader2 } from "lucide-react";
 import { useReceiptStore } from "@/store/useReceiptStore";
 import { getPrinterSettings } from "@/app/(dashboard)/user/printerActions";
 import { PrinterSettings } from "@/app/(dashboard)/settings/printer/types/printer.types";
-import { printReceiptBluetooth, type ReceiptData } from "@/lib/printer-utils"; 
+import { printReceiptBluetooth, type ReceiptData } from "@/lib/printer-utils";
 import { toast } from "sonner";
 
 type Props = {
@@ -23,50 +23,62 @@ export function PaymentSuccessModal({ open, onClose }: Props) {
   useEffect(() => {
     if (open) {
       getPrinterSettings().then((res) => {
-        if (res.success) setPrinterConfig(res.data as unknown as PrinterSettings);
+        // ✅ Melakukan pengecekan data sebelum set state
+        if (res.success && res.data) {
+          setPrinterConfig(res.data as unknown as PrinterSettings);
+        }
       });
     }
   }, [open]);
 
   const handlePrint = async () => {
-    if (!receipt || !printerConfig) {
-      toast.error("Data transaksi atau setting printer belum siap.");
+    if (!printerConfig) {
+      toast.error("Sedang mengambil setting printer, tunggu bentar bro...");
+      return;
+    }
+
+    if (!receipt) {
+      toast.error("Waduh, data struknya ilang. Coba cek lagi.");
       return;
     }
 
     setIsPrinting(true);
-    
-    // Mapping data receipt ke format ReceiptData yang diminta printer-utils
-    const printData: ReceiptData = {
-      header: printerConfig.header,
-      address: printerConfig.address,
-      footer: printerConfig.footer,
-      kasir: receipt.cashierName,
-      customerName: receipt.customerName,
-      orderType: receipt.orderType,
-      items: receipt.items.map(item => ({
-        name: item.name,
-        qty: item.qty,
-        price: item.price
-      })),
-      subtotal: receipt.subtotal,
-      total: receipt.total,
-      paid: receipt.paid,
-      change: receipt.change ?? 0,
-      tax: 0,    // Bisa disesuaikan jika ada logic pajak
-      charge: 0  // Bisa disesuaikan jika ada service charge
-    };
 
     try {
+      // ✅ Mapping Type-Safe tanpa 'any'
+      // Jika properti tax/charge tidak ada di interface store, TS akan memberikan error
+      // Solusinya adalah akses aman atau default value melalui nullish coalescing
+      const printData: ReceiptData = {
+        header: printerConfig.header,
+        address: printerConfig.address,
+        footer: printerConfig.footer,
+        kasir: receipt.cashierName,
+        customerName: receipt.customerName,
+        orderType: receipt.orderType,
+        items: receipt.items.map(item => ({
+          name: item.name,
+          qty: item.qty,
+          price: item.price
+        })),
+        subtotal: receipt.subtotal,
+        total: receipt.total,
+        paid: receipt.paid,
+        change: receipt.change ?? 0,
+        // ✅ Menggunakan optional chaining yang valid jika properti mungkin tidak ada
+        tax: ("tax" in receipt) ? (receipt as { tax: number }).tax : 0,
+        charge: ("charge" in receipt) ? (receipt as { charge: number }).charge : 0
+      };
+
       const result = await printReceiptBluetooth(printData);
+
       if (result.success) {
-        toast.success("Struk berhasil dicetak!");
+        toast.success("Struk meluncur! 🚀");
       } else {
-        toast.error(result.error || "Gagal mencetak struk.");
+        toast.error(result.error || "Gagal nyetak, cek printernya bro.");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Terjadi kesalahan pada printer.");
+      console.error("PRINT_ERROR:", error);
+      toast.error("Ada masalah koneksi ke printer.");
     } finally {
       setIsPrinting(false);
     }

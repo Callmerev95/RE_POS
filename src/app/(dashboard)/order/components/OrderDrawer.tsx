@@ -10,14 +10,16 @@ import {
 } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Printer } from "lucide-react"; // Trash2 dibuang
+import { Printer, Loader2 } from "lucide-react";
 
 // Local Assets & Logic
 import { useOrderDetail } from "@/features/order-history/useOrderDetail";
 import { LocalOrderSchema, type OrderItem } from "@/lib/db";
 import { toast } from "sonner";
-import { printReceiptBluetooth } from "@/lib/printer-utils";
+import { printReceiptBluetooth, type ReceiptData } from "@/lib/printer-utils";
 import { getPrinterSettings } from "@/app/(dashboard)/user/printerActions";
+import { PrinterSettings } from "@/app/(dashboard)/settings/printer/types/printer.types";
+import { useReceiptStore } from "@/store/useReceiptStore";
 
 // Inferensi tipe dari Zod
 type OrderRecord = z.infer<typeof LocalOrderSchema>;
@@ -44,35 +46,49 @@ export function OrderDrawer({ open, onClose, orderId }: Props) {
       const res = await getPrinterSettings();
 
       if (res.success && res.data) {
-        const s = res.data;
+        const s = res.data as unknown as PrinterSettings;
+
         const paidAmount = order.paid ?? order.total;
         const calculateChange = paidAmount - order.total;
 
-        await printReceiptBluetooth({
+        // ✅ AMBIL NAMA KASIR DARI STORE (Sama seperti PaymentSuccessModal)
+        // Kita ambil dari state receipt. Jika store kosong (misal setelah refresh), 
+        // kita kasih fallback yang lebih profesional dari sekedar "Admin"
+        const cashierName = useReceiptStore.getState().receipt?.cashierName || "Staff Kasir";
+
+        const printData: ReceiptData = {
           header: s.header || "PADHE COFFEE",
           address: s.address || "",
+          footer: s.footer || "Terima Kasih!",
+          kasir: cashierName, // ✅ Sekarang sudah sinkron
+          customerName: order.customerName || "Guest",
+          orderType: order.orderType,
           items: order.items.map((i: OrderItem) => ({
             name: i.name,
             qty: i.qty,
             price: i.price,
           })),
-          total: order.total,
-          footer: s.footer || "Terima Kasih!",
-          kasir: "Admin",
-          customerName: order.customerName || "Guest",
-          orderType: order.orderType,
           subtotal: order.total,
+          total: order.total,
           paid: paidAmount,
           change: calculateChange > 0 ? calculateChange : 0,
-        });
+          tax: ("tax" in order) ? (order as { tax: number }).tax : 0,
+          charge: ("charge" in order) ? (order as { charge: number }).charge : 0
+        };
 
-        toast.success("Mencetak struk...");
+        const result = await printReceiptBluetooth(printData);
+
+        if (result.success) {
+          toast.success("Struk berhasil dicetak! 🚀");
+        } else {
+          toast.error(result.error || "Gagal mencetak struk.");
+        }
       } else {
         toast.error("Atur printer di menu Settings terlebih dahulu");
       }
     } catch (err) {
-      const error = err as Error;
-      toast.error(`Gagal Cetak: ${error.message}`);
+      console.error("PRINT_ERROR:", err);
+      toast.error("Terjadi kesalahan pada koneksi printer.");
     } finally {
       setIsPrinting(false);
     }
@@ -166,11 +182,15 @@ export function OrderDrawer({ open, onClose, orderId }: Props) {
             </div>
 
             <Button
-              className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-2xl py-7 text-sm font-black uppercase tracking-widest shadow-xl transition-all active:scale-95"
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-2xl py-7 text-sm font-black uppercase tracking-widest shadow-xl transition-all active:scale-95 disabled:opacity-50"
               onClick={onPrint}
               disabled={isPrinting}
             >
-              <Printer className="mr-3 h-5 w-5" />
+              {isPrinting ? (
+                <Loader2 className="mr-3 h-5 w-5 animate-spin" />
+              ) : (
+                <Printer className="mr-3 h-5 w-5" />
+              )}
               {isPrinting ? "Memproses..." : "Cetak Struk"}
             </Button>
           </div>

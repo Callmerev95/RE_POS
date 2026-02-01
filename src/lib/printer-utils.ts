@@ -71,8 +71,15 @@ export async function printReceiptBluetooth(data: ReceiptData) {
     ) => {
       const valStr =
         typeof value === "number" ? value.toLocaleString("id-ID") : value;
-      const spaces = 32 - label.length - valStr.length;
-      const row = `${label}${" ".repeat(spaces > 0 ? spaces : 1)}${valStr}\n`;
+
+      // Proteksi jika label terlalu panjang agar tidak merusak kolom kanan
+      const maxLabelLen = 32 - valStr.length - 1;
+      const truncatedLabel =
+        label.length > maxLabelLen ? label.substring(0, maxLabelLen) : label;
+
+      const spaces = 32 - truncatedLabel.length - valStr.length;
+      const row = `${truncatedLabel}${" ".repeat(spaces > 0 ? spaces : 1)}${valStr}\n`;
+
       return isBold ? `\x1b\x45\x01${row}\x1b\x45\x00` : row;
     };
 

@@ -9,6 +9,7 @@ export interface PrintItem {
 export interface ReceiptData {
   header: string;
   address: string;
+  paymentMethod: string; // ✅ Tambahan sesuai request
   items: PrintItem[];
   total: number;
   footer: string;
@@ -61,9 +62,9 @@ export async function printReceiptBluetooth(data: ReceiptData) {
       "00002af1-0000-1000-8000-00805f9b34fb",
     );
 
-    // src/lib/printer-utils.ts (Hanya bagian pembentukan 'content')
-
     const encoder = new TextEncoder();
+
+    // Helper format baris struk (32 karakter standard thermal 58mm)
     const formatRow = (
       label: string,
       value: string | number,
@@ -72,7 +73,6 @@ export async function printReceiptBluetooth(data: ReceiptData) {
       const valStr =
         typeof value === "number" ? value.toLocaleString("id-ID") : value;
 
-      // Proteksi jika label terlalu panjang agar tidak merusak kolom kanan
       const maxLabelLen = 32 - valStr.length - 1;
       const truncatedLabel =
         label.length > maxLabelLen ? label.substring(0, maxLabelLen) : label;
@@ -83,23 +83,23 @@ export async function printReceiptBluetooth(data: ReceiptData) {
       return isBold ? `\x1b\x45\x01${row}\x1b\x45\x00` : row;
     };
 
-    // --- 1. HEADER (Bold & Besar) ---
-    let content = `\x1b\x61\x01`; // Center align
-    content += `\x1b\x45\x01\x1b\x21\x10${data.header.toUpperCase()}\x1b\x21\x00\x1b\x45\x00\n`; // Bold + Double Height
-    content += `\x1b\x21\x01${data.address}\x1b\x21\x00\n`; // Font kecil untuk alamat
-    content += `--------------------------------\n\x1b\x61\x00`; // Back to Left
+    // --- 1. HEADER (Center, Bold, Besar) ---
+    let content = `\x1b\x61\x01`;
+    content += `\x1b\x45\x01\x1b\x21\x10${data.header.toUpperCase()}\x1b\x21\x00\x1b\x45\x00\n`;
+    content += `\x1b\x21\x01${data.address}\x1b\x21\x00\n`;
+    content += `--------------------------------\n\x1b\x61\x00`;
 
-    // --- 2. INFO TRANSAKSI (Normal) ---
+    // --- 2. INFO TRANSAKSI ---
     content += formatRow("Tgl", new Date().toLocaleDateString("id-ID"));
     content += formatRow("Kasir", data.kasir);
     if (data.customerName)
-      content += formatRow("Cust", data.customerName, true); // Nama customer kita Bold
+      content += formatRow("Cust", data.customerName, true);
     content += formatRow("Tipe", data.orderType || "Dine In");
     content += `--------------------------------\n`;
 
-    // --- 3. ITEMS (Nama Item Bold) ---
+    // --- 3. ITEMS ---
     data.items.forEach((item: PrintItem) => {
-      content += `\x1b\x45\x01${item.name.toUpperCase()}\x1b\x45\x00\n`; // Nama item Bold
+      content += `\x1b\x45\x01${item.name.toUpperCase()}\x1b\x45\x00\n`;
       const itemRow = `${item.qty} x ${item.price.toLocaleString("id-ID")}`;
       const lineTotal = (item.qty * item.price).toLocaleString("id-ID");
       const spaces = 32 - itemRow.length - lineTotal.length;
@@ -108,29 +108,36 @@ export async function printReceiptBluetooth(data: ReceiptData) {
 
     content += `--------------------------------\n`;
 
-    // --- 4. RINCIAN BIAYA (Normal) ---
+    // --- 4. RINCIAN BIAYA ---
     content += formatRow("Subtotal", data.subtotal);
     if (data.tax) content += formatRow("Tax", data.tax);
     if (data.charge) content += formatRow("Service", data.charge);
     content += `--------------------------------\n`;
 
-    // --- 5. GRAND TOTAL (Bold & Lebih Besar) ---
+    // --- 5. GRAND TOTAL ---
     const totalVal = `Rp ${data.total.toLocaleString("id-ID")}`;
     const totalSpaces = 32 - 6 - totalVal.length;
-    // Pakai Double Width + Bold untuk Total
     content += `\x1b\x45\x01\x1b\x21\x20TOTAL ${" ".repeat(totalSpaces > 0 ? totalSpaces : 1)}${totalVal}\x1b\x21\x00\x1b\x45\x00\n`;
 
-    // --- 6. PEMBAYARAN (Kembali Bold) ---
+    // --- 6. PEMBAYARAN & METODE (NEW) ---
+    content += formatRow("Metode", data.paymentMethod.toUpperCase()); // ✅ Muncul di struk
+
     if (data.paid) {
-      content += formatRow("Cash", data.paid);
-      content += formatRow("Change", data.change || 0, true); // Kembali kita Bold
+      content += formatRow("Bayar", data.paid);
+      // Jika kembalian ada, cetak Bold
+      if ((data.change ?? 0) > 0) {
+        content += formatRow("Kembali", data.change || 0, true);
+      } else {
+        content += formatRow("Status", "LUNAS", true);
+      }
     }
 
     content += `--------------------------------\n`;
+
+    // --- 7. FOOTER ---
     content += `\x1b\x61\x01\n\x1b\x45\x01${data.footer}\x1b\x45\x00\n\n\n\n\n\x1b\x61\x00`;
 
-    // ... sisa kode pengiriman chunking tetap sama
-
+    // CHUNKING DATA (Agar Bluetooth tidak overload)
     const fullBuffer = encoder.encode(content);
     const CHUNK_SIZE = 512;
 

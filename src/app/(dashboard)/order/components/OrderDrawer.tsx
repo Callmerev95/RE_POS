@@ -51,16 +51,24 @@ export function OrderDrawer({ open, onClose, orderId }: Props) {
         const paidAmount = order.paid ?? order.total;
         const calculateChange = paidAmount - order.total;
 
-        // ✅ AMBIL NAMA KASIR DARI STORE (Sama seperti PaymentSuccessModal)
-        // Kita ambil dari state receipt. Jika store kosong (misal setelah refresh), 
-        // kita kasih fallback yang lebih profesional dari sekedar "Admin"
-        const cashierName = useReceiptStore.getState().receipt?.cashierName || "Staff Kasir";
+        /**
+         * ✅ PENENTUAN NAMA KASIR (NO ANY & SAFE FALLBACK)
+         * 1. Cek di Database (Order)
+         * 2. Ambil dari Store
+         * 3. Fallback ke Nama lo "Revangga"
+         */
+        const dbCashier = ("cashierName" in order && typeof order.cashierName === "string")
+          ? order.cashierName
+          : null;
+
+        const cashierName = dbCashier || useReceiptStore.getState().receipt?.cashierName || "Revangga";
 
         const printData: ReceiptData = {
           header: s.header || "PADHE COFFEE",
           address: s.address || "",
           footer: s.footer || "Terima Kasih!",
-          kasir: cashierName, // ✅ Sekarang sudah sinkron
+          kasir: cashierName,
+          paymentMethod: order.paymentMethod || "CASH",
           customerName: order.customerName || "Guest",
           orderType: order.orderType,
           items: order.items.map((i: OrderItem) => ({

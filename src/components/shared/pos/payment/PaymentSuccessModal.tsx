@@ -55,6 +55,8 @@ export function PaymentSuccessModal({ open, onClose }: Props) {
         kasir: receipt.cashierName,
         customerName: receipt.customerName,
         orderType: receipt.orderType,
+        // TAMBAHKAN INI BRO:
+        paymentMethod: receipt.paymentMethod || "CASH",
         items: receipt.items.map(item => ({
           name: item.name,
           qty: item.qty,
@@ -64,7 +66,6 @@ export function PaymentSuccessModal({ open, onClose }: Props) {
         total: receipt.total,
         paid: receipt.paid,
         change: receipt.change ?? 0,
-        // ✅ Menggunakan optional chaining yang valid jika properti mungkin tidak ada
         tax: ("tax" in receipt) ? (receipt as { tax: number }).tax : 0,
         charge: ("charge" in receipt) ? (receipt as { charge: number }).charge : 0
       };

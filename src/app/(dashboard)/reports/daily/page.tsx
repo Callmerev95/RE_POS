@@ -4,6 +4,9 @@ import { PaymentMethodGrid } from "@/components/shared/reports/PaymentMethodGrid
 import { RevenueAreaChart } from "@/components/shared/reports/RevenueAreaChart";
 import { DailyReportHeader } from "./components/DailyReportHeader";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 /**
  * DAILY REPORT PAGE - SERVER COMPONENT [cite: 2026-01-12]
  */

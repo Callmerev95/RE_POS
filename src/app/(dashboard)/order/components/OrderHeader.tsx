@@ -6,20 +6,18 @@ import { DateRange } from "react-day-picker";
 import { Calendar as CalendarIcon, Layers, WalletCards } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { LocalOrderSchema } from "@/lib/db"; // Sumber kebenaran tipe [cite: 2026-01-10]
+import { LocalOrderSchema } from "@/lib/db";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Ekstrak tipe langsung dari Zod Schema
 type OrderType = z.infer<typeof LocalOrderSchema>["orderType"];
 type PaymentMethod = z.infer<typeof LocalOrderSchema>["paymentMethod"];
 
 interface OrderHeaderProps {
   dateRange: DateRange | undefined;
   setDateRange: (range: DateRange | undefined) => void;
-  // Gunakan tipe Zod + literal 'all' untuk filter
   type: OrderType | "all";
   setType: (type: OrderType | "all") => void;
   method: PaymentMethod | "all";
@@ -33,8 +31,7 @@ export function OrderHeader({
 }: OrderHeaderProps) {
   return (
     <div className="flex flex-wrap items-center gap-4 w-full justify-start p-1">
-
-      {/* 1. Date Filter Group */}
+      {/* 1. Date Filter */}
       <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-4 h-12 rounded-2xl border border-slate-100 shadow-sm hover:border-cyan-200 transition-all group">
         <CalendarIcon size={16} className="text-cyan-600 group-hover:scale-110 transition-transform" />
         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-1">Periode</span>
@@ -49,9 +46,7 @@ export function OrderHeader({
             >
               {dateRange?.from ? (
                 dateRange.to ? (
-                  <>
-                    {format(dateRange.from, "dd LLL")} - {format(dateRange.to, "dd LLL 2026")}
-                  </>
+                  <>{format(dateRange.from, "dd LLL")} - {format(dateRange.to, "dd LLL yyyy")}</>
                 ) : (
                   format(dateRange.from, "dd LLL yyyy")
                 )
@@ -74,7 +69,7 @@ export function OrderHeader({
         </Popover>
       </div>
 
-      {/* 2. Type Filter Group */}
+      {/* 2. Type Filter */}
       <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-4 h-12 rounded-2xl border border-slate-100 shadow-sm hover:border-cyan-200 transition-all group">
         <Layers size={16} className="text-cyan-600 group-hover:scale-110 transition-transform" />
         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-1">Tipe</span>
@@ -90,7 +85,7 @@ export function OrderHeader({
         </Select>
       </div>
 
-      {/* 3. Method Filter Group */}
+      {/* 3. Method Filter */}
       <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-4 h-12 rounded-2xl border border-slate-100 shadow-sm hover:border-cyan-200 transition-all group">
         <WalletCards size={16} className="text-cyan-600 group-hover:scale-110 transition-transform" />
         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mr-1">Metode</span>

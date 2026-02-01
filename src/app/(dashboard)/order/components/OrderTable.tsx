@@ -6,7 +6,6 @@ import { OrderRow } from "./OrderRow";
 import { OrderEmptyState } from "./OrderEmptyState";
 import { Spinner } from "@/components/ui/spinner";
 
-// Inferensi tipe langsung dari Zod Schema agar single source of truth [cite: 2026-01-10]
 type OrderRecord = z.infer<typeof LocalOrderSchema> & { isSynced?: boolean };
 
 interface Props {
@@ -19,16 +18,14 @@ export function OrderTable({ orders, loading }: Props) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-3">
         <Spinner className="text-cyan-500" />
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest animate-pulse">
-          Memuat Data Transaksi...
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest animate-pulse">
+          Memaksimalkan Data...
         </p>
       </div>
     );
   }
 
-  if (orders.length === 0) {
-    return <OrderEmptyState />;
-  }
+  if (orders.length === 0) return <OrderEmptyState />;
 
   return (
     <div className="relative min-w-full isolate">
@@ -36,33 +33,18 @@ export function OrderTable({ orders, loading }: Props) {
         <thead>
           <tr className="relative z-30">
             <th className="sticky top-0 z-30 bg-[#f8fafc] w-1 p-0 border-b border-slate-200 first:rounded-tl-3xl" />
-            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-left font-black text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-200">
-              Waktu
-            </th>
-            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-left font-black text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-200">
-              Customer
-            </th>
-            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-left font-black text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-200">
-              Tipe
-            </th>
-            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-left font-black text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-200">
-              Metode
-            </th>
-            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-right font-black text-slate-500 uppercase tracking-wider text-[10px] last:rounded-tr-3xl border-b border-slate-200">
-              Total
-            </th>
+            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-left font-black text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-200">Waktu</th>
+            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-left font-black text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-200">Customer</th>
+            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-left font-black text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-200">Tipe</th>
+            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-left font-black text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-200">Metode</th>
+            <th className="sticky top-0 z-30 bg-[#f8fafc] px-6 py-4 text-right font-black text-slate-500 uppercase tracking-wider text-[10px] last:rounded-tr-3xl border-b border-slate-200">Total</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-50">
-          {orders.map((o) => {
-            // Validasi tiap row dengan Zod secara aman [cite: 2026-01-10]
-            const result = LocalOrderSchema.safeParse(o);
-            if (!result.success) {
-              console.error("Invalid Order Data:", result.error);
-              return null;
-            }
-            return <OrderRow key={o.id} order={o} />;
-          })}
+          {orders.map((o) => (
+            // Hapus safeParse di sini untuk performa. Validasi sudah dilakukan saat fetch [cite: 2026-01-12]
+            <OrderRow key={o.id} order={o} />
+          ))}
         </tbody>
       </table>
     </div>

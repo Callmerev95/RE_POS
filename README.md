@@ -58,8 +58,8 @@ Sebelum memulai, pastikan Anda memiliki:
 
 ### 1. Clone Repository
 ```bash
-git clone <repository-url>
-cd padhe-pos
+git clone https://github.com/Callmerev95/RE_POS.git
+cd RE_POS
 ```
 
 ### 2. Install Dependencies
@@ -75,7 +75,7 @@ Buat file `.env.local` di root directory:
 
 ```env
 # Database
-DATABASE_URL="postgresql://user:password@localhost:5432/padhe_pos"
+DATABASE_URL="postgresql://user:password@localhost:5432/re_pos"
 
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"

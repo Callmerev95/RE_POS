@@ -79,7 +79,7 @@ export function SyncStatus() {
                         <div className="relative flex items-center justify-center cursor-help">
                             {isOnline ? (
                                 <>
-                                    {/* Animasi Ping Efek berkedip halus */}
+                                
                                     <span className="absolute inline-flex h-2 w-2 rounded-full bg-emerald-400 opacity-75 animate-ping" />
                                     <Wifi className="w-4 h-4 text-emerald-500 relative z-10" />
                                 </>
@@ -94,7 +94,7 @@ export function SyncStatus() {
                 </Tooltip>
             </TooltipProvider>
 
-            {/* Indikator Syncing yang minimalis */}
+
             {isSyncing && (
                 <div className="flex items-center gap-1.5 ml-1 animate-in fade-in slide-in-from-left-2 duration-300">
                     <div className="w-px h-3 bg-slate-100" />

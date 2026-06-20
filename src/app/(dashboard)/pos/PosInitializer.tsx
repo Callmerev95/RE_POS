@@ -9,5 +9,5 @@ export function PosInitializer() {
     useHoldOrderStore.getState().initialize();
   }, []);
 
-  return null; // Komponen ini tidak merender apapun, hanya menjalankan logika
+  return null; 
 }

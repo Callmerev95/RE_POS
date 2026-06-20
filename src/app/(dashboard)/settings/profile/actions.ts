@@ -43,7 +43,7 @@ export async function updateProfile(data: ProfileUpdateData) {
             data: updatePayload,
         });
 
-        revalidatePath("/"); // Paksa Next.js refresh data
+        revalidatePath("/"); // Revalidate homepage cache setelah update profil
         return { success: true, message: "Profil berhasil diperbarui!" };
     } catch (error) {
         console.error(error);

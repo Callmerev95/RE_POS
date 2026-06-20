@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { type HoldOrder } from "@/store/holdOrder.types";
 
-// ✅ 1. Definisi Zod Schema (Single Source of Truth)
+// 1. Define Zod Schemas
 export const OrderItemSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -22,14 +22,14 @@ export const LocalOrderSchema = z.object({
   orderType: z.enum(["Dine In", "Take Away"]),
   items: z.array(OrderItemSchema),
   isSynced: z.boolean().optional().default(false),
-  // ✅ FIX: Default status diubah ke PENDING agar muncul di KDS
+
   status: z
     .enum(["PENDING", "PREPARING", "READY", "COMPLETED", "CANCELLED"])
     .optional()
     .default("PENDING"),
 });
 
-// ✅ 2. Export Type
+// 2. Export Type
 export type OrderItem = z.infer<typeof OrderItemSchema>;
 export type LocalOrder = z.infer<typeof LocalOrderSchema>;
 
@@ -59,7 +59,7 @@ function openDB(): Promise<IDBDatabase> {
   });
 }
 
-// ✅ FIX: Fungsi updateOrderSyncStatus
+// --- ORDERS SECTION ---
 export async function updateOrderSyncStatus(
   id: string,
   isSynced: boolean,
@@ -83,7 +83,7 @@ export async function updateOrderSyncStatus(
   });
 }
 
-// ✅ NEW: Fungsi updateOrderStatus (Untuk KDS mengupdate status utama)
+// Fungsi updateOrderStatusLocal (Untuk update status order di KDS)
 export async function updateOrderStatusLocal(
   id: string,
   status: LocalOrder["status"]
@@ -105,7 +105,7 @@ export async function updateOrderStatusLocal(
   });
 }
 
-// ✅ NEW: Fungsi updateItemStatusLocal (Untuk centang item di KDS)
+// Fungsi updateItemStatusLocal (Untuk centang item di KDS)
 export async function updateItemStatusLocal(
   orderId: string,
   itemIdx: number,

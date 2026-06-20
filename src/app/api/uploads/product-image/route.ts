@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
+
 const ALLOWED = ["image/png", "image/jpeg", "image/webp"];
-const MAX_SIZE = 2 * 1024 * 1024; // 2MB
+const MAX_SIZE = 2 * 1024 * 1024; // 2MB 
 const BUCKET = "product-images";
 
 function extFromMime(mime: string) {
@@ -12,7 +13,7 @@ function extFromMime(mime: string) {
     case "image/webp":
       return "webp";
     default:
-      return "jpg"; // image/jpeg
+      return "jpg"; 
   }
 }
 

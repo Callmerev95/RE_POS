@@ -16,7 +16,7 @@ export function usePOSKeyboard(opts: Options) {
     function handler(e: KeyboardEvent) {
       const target = e.target as HTMLElement;
 
-      // ❌ Jangan ganggu input / textarea
+      // 
       if (
         target.tagName === "INPUT" ||
         target.tagName === "TEXTAREA" ||
@@ -25,7 +25,7 @@ export function usePOSKeyboard(opts: Options) {
         return;
       }
 
-      // 🔍 Focus Search
+      // Focus search
       if (e.key === "/") {
         e.preventDefault();
         opts.onFocusSearch?.();
@@ -49,7 +49,7 @@ export function usePOSKeyboard(opts: Options) {
         opts.onRemoveItem?.();
       }
 
-      // 💳 Open payment
+      // Open payment
       if (e.ctrlKey && e.key.toLowerCase() === "p") {
         e.preventDefault();
         opts.onOpenPayment?.();

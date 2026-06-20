@@ -14,7 +14,7 @@ export function useProductForm(
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
 
-  // State Form Manual (Bisa juga pake react-hook-form nanti, tapi kita rapikan yang ada dulu)
+  // State form utama
   const [formData, setFormData] = useState<ProductFormInput>({
     name: "",
     description: "",
@@ -118,9 +118,9 @@ export function useProductForm(
       
       onClose();
     } catch (err: unknown) {
-      // Basmi 'any' dengan pengecekan instance
+    
       if (err instanceof Error) {
-        // Jika error dari Zod (biasanya dalam string JSON atau message)
+      
         toast.error(err.message);
       } else {
         toast.error("Gagal menyimpan produk");

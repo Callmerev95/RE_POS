@@ -11,6 +11,7 @@ import { Coffee, Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import Image from "next/image";
 
+// Login Page with Role-Based Redirect
 export default function LoginPage() {
   const router = useRouter();
 
@@ -45,7 +46,7 @@ export default function LoginPage() {
 
       toast.success("Login berhasil! Selamat datang");
 
-      // 🔐 ROLE REDIRECT (logic backend kamu)
+      // ROLE REDIRECT 
       if (data.role === "ADMIN") {
         router.replace("/dashboard");
       } else {
@@ -86,17 +87,17 @@ export default function LoginPage() {
                 <Coffee className="h-8 w-8" />
               </div>
               <div>
-                <h1 className="text-4xl">Padhe Coffee POS</h1>
+                <h1 className="text-4xl">RE_POS</h1>
                 <p className="text-white/80">Point of Sale System</p>
               </div>
             </div>
 
             <h2 className="text-3xl mb-4">
-              Kelola Coffee Shop Anda dengan Mudah
+              Kelola Bisnis Anda dengan Mudah
             </h2>
             <p className="text-lg text-white/90 max-w-md">
               Sistem kasir modern yang dirancang khusus untuk coffee shop.
-              Cepat, mudah, dan efisien.
+              Cepat, mudah, dan efisien. 
             </p>
 
             <div className="mt-12 space-y-4">
@@ -251,7 +252,7 @@ export default function LoginPage() {
           </Card>
 
           <p className="text-center text-sm text-muted-foreground mt-6">
-            © 2026 Padhe Coffee POS. All rights reserved.
+            © 2026 RE_POS. All rights reserved.
           </p>
         </motion.div>
       </div>

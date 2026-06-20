@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { motion, Variants } from "framer-motion"; // Pastikan import framer-motion yang stabil
+import { motion, Variants } from "framer-motion"; 
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-// PENYESUAIAN: Path ke types yang baru
+
 import { ProductUI } from "../types/product.types";
 import { CATEGORY_COLOR_STYLES, toCategoryColor } from "@/lib/category-colors";
 import { Button } from "@/components/ui/button";
@@ -45,8 +45,6 @@ interface ProductRowProps {
 export function ProductRow({ product, onEdit, onDeactivate }: ProductRowProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-  // Ambil style kategori berdasarkan color dari database
   const colorKey = toCategoryColor(product.category.color);
   const styles = CATEGORY_COLOR_STYLES[colorKey];
 
@@ -55,7 +53,7 @@ export function ProductRow({ product, onEdit, onDeactivate }: ProductRowProps) {
       variants={itemVariants}
       layout
       whileHover="hover"
-      initial="show" // Set ke show agar tidak hilang saat re-render
+      initial="show" 
       className={cn(
         "group transition-all duration-500 relative border-b border-slate-100/50 bg-white",
         "hover:z-10 hover:bg-white hover:shadow-[0_0_25px_rgba(34,211,238,0.15),0_10px_15px_-3px_rgba(0,0,0,0.05)]"

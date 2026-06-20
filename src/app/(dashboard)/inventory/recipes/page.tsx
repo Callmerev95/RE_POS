@@ -3,14 +3,14 @@ import { Coffee, Utensils, ChefHat, Search } from "lucide-react";
 import { ManageRecipeDialog } from "./ManageRecipeDialog";
 import { PremiumHeader } from "@/components/shared/header/PremiumHeader";
 
-// Interface yang lebih lengkap untuk mendukung perhitungan HPP [cite: 2026-01-10]
+// INTERFACES
 interface RecipeItemUI {
   id: string;
   quantity: number;
   ingredient: {
     name: string;
     unitUsage: string;
-    averagePrice: number; // Tambahkan properti ini di interface [cite: 2026-01-12]
+    averagePrice: number;
   };
 }
 
@@ -68,7 +68,7 @@ export default async function RecipesPage({
         {products.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product) => {
-              // FIX: Perhitungan HPP sekarang type-safe tanpa @ts-ignore [cite: 2026-01-12]
+              // Hitung total HPP berdasarkan resep dan harga rata-rata bahan
               const totalHpp = product.recipes.reduce((acc, item) => {
                 const price = item.ingredient.averagePrice || 0;
                 return acc + (item.quantity * price);

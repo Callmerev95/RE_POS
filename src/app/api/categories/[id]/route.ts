@@ -24,6 +24,7 @@ export async function PUT(
   return NextResponse.json(category);
 }
 
+
 export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 

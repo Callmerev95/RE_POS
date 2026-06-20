@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma"; // Sesuai file di gambar kamu
+import { prisma } from "@/lib/prisma"; 
 
 export async function getProductSearch() {
   try {

@@ -32,7 +32,7 @@ export function UserProfileMenu() {
 
     return (
         <div className="relative" ref={menuRef}>
-            {/* TRIGGER BUTTON: Tetap solid dengan layout scannable */}
+            {/* TRIGGER BUTTON */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center gap-3 p-1 rounded-2xl hover:bg-slate-50 transition-all active:scale-95 group"
@@ -54,7 +54,6 @@ export function UserProfileMenu() {
                             />
                         </div>
                     </div>
-                    {/* Indicator dengan rotasi halus */}
                     <div className={cn(
                         "absolute -bottom-1 -right-1 bg-white rounded-lg shadow-sm border border-slate-100 p-0.5 transition-transform duration-300",
                         isOpen ? "rotate-180" : "rotate-0"
@@ -64,10 +63,9 @@ export function UserProfileMenu() {
                 </div>
             </button>
 
-            {/* DROPDOWN MENU: Dirampingkan dari w-64 ke w-56 untuk tablet */}
             {isOpen && (
                 <div className="absolute top-[calc(100%+12px)] right-0 w-56 p-1.5 bg-white border border-slate-100 shadow-[0_15px_40px_rgba(0,0,0,0.08)] rounded-3xl z-50 animate-in fade-in slide-in-from-top-2">
-                    {/* Header Info yang lebih ramping */}
+                
                     <div className="px-3 py-3 border-b border-slate-50 mb-1">
                         <div className="flex items-center gap-2 mb-1">
                             <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -104,7 +102,7 @@ export function UserProfileMenu() {
                         </div>
                     </div>
 
-                    {/* Logout Button dengan area touch yang pas */}
+                    {/* Logout Button  */}
                     <button
                         onClick={handleLogout}
                         className="w-full mt-2 pt-2 border-t border-slate-50 flex items-center gap-2.5 px-3 py-2.5 text-[10.5px] text-rose-500 font-black hover:bg-rose-50 rounded-xl transition-all group"

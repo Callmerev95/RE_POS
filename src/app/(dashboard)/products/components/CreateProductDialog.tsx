@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/select";
 import { ImageIcon, Package } from "lucide-react";
 import Image from "next/image";
-// PENYESUAIAN: Path import disesuaikan karena sudah satu folder fitur
 import { ProductUI } from "../types/product.types";
 import { useProductForm } from "../hooks/useProductForm";
 

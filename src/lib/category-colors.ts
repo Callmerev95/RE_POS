@@ -3,12 +3,12 @@
    ========================= */
 
 export const CATEGORY_COLOR_STYLES = {
-  // Signature / Coffee vibe
+
   brown: {
     dot: "bg-[#8B5A2B] shadow-[0_0_8px_rgba(139,90,43,0.4)]",
     badge: "bg-[#F3E9DF] text-[#5C3A1E] border-[#E4D3C3] font-black",
   },
-  // Soft & Modern Colors
+
   cyan: {
     dot: "bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.4)]",
     badge: "bg-cyan-50 text-cyan-700 border-cyan-100 font-black",
@@ -41,7 +41,7 @@ export const CATEGORY_COLOR_STYLES = {
     dot: "bg-slate-500 shadow-[0_0_8px_rgba(100,116,139,0.4)]",
     badge: "bg-slate-100 text-slate-700 border-slate-200 font-black",
   },
-  // ADDED 3 NEW COLORS FOR TOTAL 12
+
   blue: {
     dot: "bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.4)]",
     badge: "bg-blue-50 text-blue-700 border-blue-100 font-black",

@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { PremiumHeader } from "@/components/shared/header/PremiumHeader";
 
-// Kita buat tipenya lebih eksplisit agar sinkron dengan hook useProductLogic
+
 type ProductHeaderProps = {
   total: number;
   onAdd?: () => void;
   statusFilter?: "all" | "active" | "inactive";
-  onStatusChange?: (v: string) => void; // Kita gunakan string agar fleksibel dengan router.replace
+  onStatusChange?: (v: string) => void; 
 };
 
 export function ProductHeader({
@@ -43,7 +43,7 @@ export function ProductHeader({
         }
       />
 
-      {/* FIX: Perbaikan typo border-whitåçe dan penyesuaian warna */}
+    
       <div className="bg-white/60 backdrop-blur-md p-2 rounded-[2.5rem] border border-white shadow-xl shadow-slate-200/30 flex items-center justify-between px-6 h-14">
         <div className="flex items-center gap-3">
           <div className="bg-cyan-50 p-2 rounded-xl">
@@ -71,7 +71,7 @@ export function ProductHeader({
               </Button>
             </DropdownMenuTrigger>
 
-            {/* FIX: Menggunakan z-50 standar dan memastikan bg-white */}
+
             <DropdownMenuContent
               align="end"
               className="w-56 rounded-2xl border-slate-100 shadow-2xl p-2 bg-white z-50"

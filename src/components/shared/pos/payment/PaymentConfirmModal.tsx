@@ -15,7 +15,7 @@ import { Calculator, Loader2, Copy, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 
 const PAYMENT_INFO: Record<string, { label: string; account: string; owner: string }> = {
-  DANA: { label: "DANA", account: "0821-4394-4219", owner: "Kurniawa Adi Prasetya" },
+  DANA: { label: "DANA", account: "0821-4394-4219", owner: "Kurniawan Adi Prasetya" },
   QRIS: { label: "QRIS", account: "Stiker di Meja Kasir", owner: "Coffee POS" },
   TRANSFER: { label: "BANK BCA", account: "725-810-3561", owner: "Kurniawan Adi Prasetya" },
   BCA: { label: "BANK BCA", account: "725-810-3561", owner: "Kurniawan Adi Prasetya" },

@@ -10,7 +10,7 @@ import { CreateUserDialog } from "./CreateUserDialog";
 import { UserActions } from "./UserActions";
 import { Role, User } from "@prisma/client";
 
-// Definisikan tipe data eksplisit (No Any!)
+
 interface UserClientProps {
   initialData: User[];
 }
@@ -20,8 +20,6 @@ export default function UserClient({ initialData }: UserClientProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    // Menggunakan requestAnimationFrame untuk memindahkan eksekusi 
-    // ke frame berikutnya, menghindari 'cascading render' yang diprotes ESLint
     const frame = requestAnimationFrame(() => {
       setMounted(true);
     });
@@ -54,7 +52,6 @@ export default function UserClient({ initialData }: UserClientProps) {
               <input
                 type="text"
                 placeholder="Cari nama atau email staf..."
-                // Ganti focus:ring-blue-600 atau focus:ring-2 menjadi focus:ring-cyan-500
                 className="w-full pl-12 pr-6 py-2 bg-slate-100/50 border-none rounded-xl text-[11px] font-bold focus:ring-1 focus:ring-cyan-500 transition-all placeholder:text-slate-400 h-8 outline-none"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -104,7 +101,6 @@ export default function UserClient({ initialData }: UserClientProps) {
                       {new Date(user.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })}
                     </td>
                     <td className="px-8 py-5 text-right">
-                      {/* ✅ Pastikan passing props 'user' sesuai interface UserActions */}
                       <UserActions user={user} />
                     </td>
                   </motion.tr>

@@ -43,7 +43,6 @@ export function SalesChart({ data }: SalesChartProps) {
         </div>
       </div>
 
-      {/* Container Grafik: Flex-1 dan min-h-0 supaya bener-bener nurut bapaknya */}
       <div className="flex-1 w-full relative min-h-0">
         <div className="absolute inset-0">
           <ResponsiveContainer width="100%" height="100%">

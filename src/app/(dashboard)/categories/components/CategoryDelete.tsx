@@ -65,7 +65,7 @@ export function CategoryDelete({
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={(e) => {
-              e.preventDefault(); // Mencegah dialog tertutup otomatis sebelum proses async selesai
+              e.preventDefault(); 
               onDelete();
             }}
             disabled={loading}

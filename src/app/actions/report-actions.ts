@@ -5,9 +5,7 @@ import { z } from "zod";
 import { ReportData, ChartDataPoint } from "@/types/report.types";
 
 /**
- * SCHEMA VALIDASI DATA ORDER
- * Digunakan untuk menjamin struktur data dari database sebelum diolah.
- * [cite: 2026-01-10]
+ * Skema validasi untuk data order dengan item terkait, menggunakan Zod untuk memastikan struktur data yang benar.
  */
 const OrderWithItemsSchema = z.object({
   id: z.string(),
@@ -36,19 +34,12 @@ type OrderWithItems = z.infer<typeof OrderWithItemsSchema>;
 
 /**
  * GET DAILY REPORT DATA - SERVER ACTION
- * Fungsi ini mengambil data transaksi harian secara real-time dari database.
- * [cite: 2026-01-12]
  */
 export const getDailyReportData = async (
   selectedDate: string,
 ): Promise<{ reportData: ReportData; chartData: ChartDataPoint[] }> => {
   const startOfDay = new Date(`${selectedDate}T00:00:00.000Z`);
   const endOfDay = new Date(`${selectedDate}T23:59:59.999Z`);
-
-  /**
-   * Menggunakan unknown sebagai jembatan casting untuk menghindari tipe 'any'.
-   * [cite: 2026-01-10, 2026-01-12]
-   */
   const prismaOrder = prisma.order as unknown as {
     findMany: (args: { where: object }) => Promise<unknown[]>;
   };
@@ -59,7 +50,7 @@ export const getDailyReportData = async (
     },
   });
 
-  // Validasi data mentah dari database menggunakan Zod
+  // Validasi dan transformasi data menggunakan Zod untuk memastikan tipe yang benar 
   const orders: OrderWithItems[] = z
     .array(OrderWithItemsSchema)
     .parse(rawOrders);
@@ -132,8 +123,6 @@ export const getDailyReportData = async (
 
 /**
  * GET MONTHLY REPORT DATA - SERVER ACTION
- * Fungsi ini menghitung performa toko dalam satu bulan penuh.
- * [cite: 2026-01-12]
  */
 export const getMonthlyReportData = async (
   selectedMonth: string,

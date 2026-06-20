@@ -43,7 +43,7 @@ export function TopMenus({ products }: TopMenusProps) {
         </div>
       </div>
 
-      {/* Daftar Produk Terlaris - TooltipProvider membungkus list */}
+      {/* Daftar Produk Terlaris - TooltipProvider */}
       <TooltipProvider delayDuration={200}>
         <div className="space-y-1 xl:space-y-2 flex-1 overflow-y-auto pr-1 custom-scrollbar min-h-0">
           {products.length > 0 ? (
@@ -74,8 +74,8 @@ export function TopMenus({ products }: TopMenusProps) {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent
-                  side="bottom" // Dipindah ke bawah sesuai request lo
-                  sideOffset={8} // Jarak tipis biar tetep clean
+                  side="bottom" 
+                  sideOffset={8} 
                   className="bg-slate-900 text-white border-slate-800 rounded-xl px-4 py-2 shadow-2xl z-50"
                 >
                   <p className="text-[10px] font-black uppercase tracking-widest leading-tight">

@@ -16,7 +16,7 @@ export function DailyReportHeader({ selectedDate }: Props) {
   const handleDateChange = (newDate: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("date", newDate);
-    // Push ke URL yang sama dengan param baru, ini akan memicu Server Component re-fetch data
+    // Navigate to the same path with updated query parameters
     router.push(`${pathname}?${params.toString()}`);
   };
 

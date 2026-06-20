@@ -13,16 +13,15 @@ export function ProfitAnalysis({ data }: ProfitAnalysisProps) {
   const isLoss = data.netProfit < 0;
 
   return (
-    // Ganti bagian pembungkus utama (baris 15-18):
+  
     <div className={cn(
-      // Hapus h-85, ganti jadi h-full agar bisa ditarik oleh parent grid
       "bg-[#0f172a] rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden h-full group flex flex-col justify-between border border-white/2 transition-all duration-500",
       "p-6 xl:p-9"
     )}>
       {/* Glow Effect */}
       <div className="absolute top-0 right-0 w-72 h-72 bg-emerald-500/5 blur-[100px] -mr-20 -mt-20 group-hover:bg-emerald-500/15 transition-all duration-1000" />
 
-      <div className="relative z-10 min-w-0"> {/* Tambah min-w-0 sebagai anchor truncate */}
+      <div className="relative z-10 min-w-0"> 
         <div className="flex justify-between items-start mb-6 xl:mb-8 gap-3">
           <p className="text-[9px] xl:text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] opacity-80 truncate">
             Net Profit Analysis
@@ -38,7 +37,7 @@ export function ProfitAnalysis({ data }: ProfitAnalysisProps) {
         </div>
 
         <div className="mb-8 xl:mb-10 min-w-0">
-          {/* TRUNCATE PROTECTION: Nominal utama sekarang aman dari overflow */}
+          {/* TRUNCATE PROTECTION */}
           <h2 className={cn(
             "font-black tracking-tighter leading-none flex items-baseline transition-all duration-500 truncate",
             "text-3xl sm:text-4xl lg:text-3xl xl:text-5xl 2xl:text-6xl tabular-nums",

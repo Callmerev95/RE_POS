@@ -3,10 +3,10 @@ import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
   dest: "public",
-  cacheOnFrontEndNav: true, // Kunci utama agar navigasi antar halaman di-cache
-  aggressiveFrontEndNavCaching: true, // Memaksa cache lebih agresif
-  reloadOnOnline: true, // Auto reload jika internet kembali nyala
-  disable: process.env.NODE_ENV === "development", // Bagus ditukar ke ini                 
+  cacheOnFrontEndNav: true, 
+  aggressiveFrontEndNavCaching: true,
+  reloadOnOnline: true, 
+  disable: process.env.NODE_ENV === "development",              
 });
 
 const nextConfig: NextConfig = {

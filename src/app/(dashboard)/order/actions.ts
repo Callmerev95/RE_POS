@@ -33,7 +33,7 @@ export async function getOrdersFromCloud(filters?: {
           ? filters.endDate
           : filters.endDate.toISOString().split("T")[0];
 
-      // Fix: Menambahkan milidetik .000 dan .999 untuk akurasi maksimal di Prisma
+      // Tambahkan offset +07:00 untuk memastikan waktu sesuai dengan zona waktu lokal (WIB)
       const gte = new Date(`${startDay}T00:00:00.000+07:00`);
       const lte = new Date(`${endDay}T23:59:59.999+07:00`);
 

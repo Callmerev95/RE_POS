@@ -25,7 +25,7 @@ export async function addRecipeItem(data: {
   }
 }
 
-// FIX: Tambah fungsi Update agar lebih praktis [cite: 2026-01-12]
+// Fungsi untuk memperbarui jumlah bahan dalam resep
 export async function updateRecipeItem(id: string, quantity: number) {
   try {
     await db.recipe.update({

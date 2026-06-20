@@ -21,7 +21,7 @@ import { getPrinterSettings } from "@/app/(dashboard)/user/printerActions";
 import { PrinterSettings } from "@/app/(dashboard)/settings/printer/types/printer.types";
 import { useReceiptStore } from "@/store/useReceiptStore";
 
-// Inferensi tipe dari Zod
+
 type OrderRecord = z.infer<typeof LocalOrderSchema>;
 
 type Props = {
@@ -51,12 +51,7 @@ export function OrderDrawer({ open, onClose, orderId }: Props) {
         const paidAmount = order.paid ?? order.total;
         const calculateChange = paidAmount - order.total;
 
-        /**
-         * ✅ PENENTUAN NAMA KASIR (NO ANY & SAFE FALLBACK)
-         * 1. Cek di Database (Order)
-         * 2. Ambil dari Store
-         * 3. Fallback ke Nama lo "Revangga"
-         */
+        
         const dbCashier = ("cashierName" in order && typeof order.cashierName === "string")
           ? order.cashierName
           : null;

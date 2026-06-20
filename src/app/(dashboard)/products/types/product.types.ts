@@ -1,10 +1,7 @@
 import { z } from "zod";
 import type { CategoryColor } from "@/lib/category-colors";
 
-/**
- * Kontrak Tipe Produk untuk UI
- * Mencegah adanya 'any' saat data mengalir ke komponen
- */
+
 export interface ProductUI {
   id: string;
   name: string;

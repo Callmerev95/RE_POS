@@ -9,7 +9,7 @@ function subscribe(callback: () => void) {
   return () => clearInterval(id);
 }
 
-// FIX: Bulatkan ke detik agar nilai snapshot stabil selama 1000ms
+// Snapshot untuk mendapatkan waktu saat ini dalam detik
 const getSnapshot = () => Math.floor(new Date().getTime() / 1000);
 const getServerSnapshot = () => null;
 
@@ -29,7 +29,7 @@ export function HeaderClock() {
     );
   }
 
-  // Kembalikan ke format Date menggunakan nilai detik yang stabil
+  // Konversi detik ke objek Date
   const time = new Date(seconds * 1000);
 
   return (
@@ -39,7 +39,6 @@ export function HeaderClock() {
       </div>
       <div className="flex flex-col">
         <p className="text-[11px] md:text-sm font-black text-slate-900 tracking-tight leading-none">
-          {/* PREMIUM UPDATE: Menghilangkan detik agar lebih clean */}
           {time.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace(/\./g, ':')}
         </p>
         <p className="text-[8px] md:text-[9px] font-bold text-slate-400 uppercase tracking-tighter mt-0.5 md:mt-1 leading-none">

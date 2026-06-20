@@ -39,11 +39,10 @@ export async function POST(req: Request) {
       },
     });
 
-    // 🔥 INI KUNCI UTAMA
+    // Return user role in response for client-side redirect logic
     const response = NextResponse.json({ role: user.role });
 
-    // Set cookie using Next.js Cookies API on the response.
-    // Use secure only in production so local dev (http) works.
+    // Set cookie with session ID
     response.cookies.set("session", session.id, {
       httpOnly: true,
       path: "/",

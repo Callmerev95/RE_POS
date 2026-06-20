@@ -42,14 +42,14 @@ export function HoldOrders() {
                 )}
             </button>
 
-            {/* DROPDOWN: Perbaikan Area Hover */}
+          
             {holds.length > 0 && (
                 <div className="absolute top-full right-0 w-80 z-50 
                     pt-3 
                     hidden group-hover:block 
                     animate-in fade-in slide-in-from-top-2 duration-200"
                 >
-                    {/* UI BOX: Tetap mempertahankan gaya premium */}
+                    
                     <div className="bg-white border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-4xl overflow-hidden">
                         <div className="p-5 bg-slate-900 text-white flex justify-between items-center">
                             <div>

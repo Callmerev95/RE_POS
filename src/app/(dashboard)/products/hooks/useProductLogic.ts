@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ProductUI } from "../types/product.types";
-import { deactivateProduct } from "../actions"; // Pastikan import action ini
+import { deactivateProduct } from "../actions"; 
 import { toast } from "sonner";
 
-// Definisikan tipe literal untuk status
+
 type StatusType = "all" | "active" | "inactive";
 
 export function useProductLogic(initialProducts: ProductUI[]) {
@@ -48,7 +48,7 @@ export function useProductLogic(initialProducts: ProductUI[]) {
 
       toast.success("Produk berhasil dinonaktifkan");
     } catch (err: unknown) {
-      // Menangani error tanpa menggunakan 'any' sesuai instruksi
+      
       const errorMessage = err instanceof Error ? err.message : "Gagal menonaktifkan produk";
       toast.error(errorMessage);
       console.error(err);
@@ -79,6 +79,6 @@ export function useProductLogic(initialProducts: ProductUI[]) {
     handleCreated,
     handleUpdated,
     handleStatusChange,
-    handleDeactivate, // Sekarang sudah di-export untuk digunakan di ProductsClient
+    handleDeactivate, 
   };
 }

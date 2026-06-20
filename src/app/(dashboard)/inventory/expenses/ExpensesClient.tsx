@@ -20,8 +20,7 @@ export default function ExpensesClient({ initialData }: Props) {
     const [mounted, setMounted] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Fix Final untuk ESLint strict:
-    // Kita bungkus dalam requestAnimationFrame atau biarkan useEffect bekerja secara asinkron
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setMounted(true);

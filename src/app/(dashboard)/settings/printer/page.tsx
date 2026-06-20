@@ -22,7 +22,6 @@ export default function PrinterPage() {
     async function loadData() {
       const res = await getPrinterSettings();
       if (res.success && res.data) {
-        // Cast ke PrinterSettings untuk menghindari type mismatch Prisma [cite: 2026-01-10]
         setSettings(res.data as unknown as PrinterSettings);
       }
     }

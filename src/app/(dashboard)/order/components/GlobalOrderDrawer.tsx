@@ -15,8 +15,7 @@ export function GlobalOrderDrawer() {
   const closeOrder = useOrderStore((s) => s.closeOrder);
   const selectedOrderId = useOrderStore((s) => s.selectedOrderId);
 
-  // Kita tetap biarkan OrderDrawer merender null atau logic internalnya 
-  // agar transisi animasi drawer (jika ada) tetap berjalan mulus.
+
   return (
     <OrderDrawer
       open={isOpen}

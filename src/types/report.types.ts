@@ -1,4 +1,4 @@
-// src/types/report.types.ts
+
 
 export interface ReportData {
   foodRevenue: number;
@@ -25,9 +25,9 @@ export interface ChartDataPoint {
   Minuman: number;
 }
 
-// OrderItem ini penting buat referensi di Zod schema atau kalkulasi internal
+// Tambahkan tipe untuk item pesanan
 export interface OrderItem {
   price: number;
   qty: number;
-  categoryType: string; // atau "FOOD" | "DRINK"
+  categoryType: string; 
 }

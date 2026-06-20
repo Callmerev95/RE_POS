@@ -7,7 +7,7 @@ type AuthContextType = {
   user: User | null;
   role: Role | undefined;
   setUser: (user: User) => void;
-  updateUserLocal: (data: Partial<User>) => void; // Fungsi tambahan untuk update parsial
+  updateUserLocal: (data: Partial<User>) => void; 
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);

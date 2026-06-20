@@ -6,14 +6,14 @@ import { CartPanel } from "@/components/shared/pos/cart/CartPanel";
 import { PosInitializer } from "./PosInitializer";
 
 export default async function POSPage() {
-  // Fetch products aktif dari database - LOGIC TETAP SAMA
+  // Fetch products aktif dari database beserta kategori-nya
   const products = await prisma.product.findMany({
     where: { isActive: true },
     include: { category: true },
     orderBy: { name: "asc" },
   });
 
-  // Map products - LOGIC TETAP SAMA
+  // Map products ke format yang dibutuhkan UI, termasuk konversi warna kategori
   const uiProducts: Product[] = products.map((p) => ({
     id: p.id,
     name: p.name,

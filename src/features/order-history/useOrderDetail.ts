@@ -22,7 +22,7 @@ export function useOrderDetail(orderId: string | null) {
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Menggunakan useCallback agar fungsi stabil dan tidak memicu effect berulang
+  // Fungsi untuk fetch detail order berdasarkan ID
   const fetchDetail = useCallback(async (id: string) => {
     setLoading(true);
     try {
@@ -37,7 +37,7 @@ export function useOrderDetail(orderId: string | null) {
   }, []);
 
   useEffect(() => {
-    // Jika tidak ada orderId, kita set null
+    // Jika tidak ada orderId, reset state dan jangan panggil API
     if (!orderId) {
       setOrder(null);
       return;
@@ -46,7 +46,7 @@ export function useOrderDetail(orderId: string | null) {
     // Panggil fungsi fetch
     fetchDetail(orderId);
     
-  }, [orderId, fetchDetail]); // fetchDetail sekarang stabil karena useCallback
+  }, [orderId, fetchDetail]); // Tambahkan fetchDetail ke dependency array untuk memastikan referensi stabil
 
   return {
     order,

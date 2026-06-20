@@ -1,4 +1,4 @@
-// src/lib/printer-utils.ts
+
 
 export interface PrintItem {
   name: string;
@@ -9,7 +9,7 @@ export interface PrintItem {
 export interface ReceiptData {
   header: string;
   address: string;
-  paymentMethod: string; // ✅ Tambahan sesuai request
+  paymentMethod: string; 
   items: PrintItem[];
   total: number;
   footer: string;
@@ -64,7 +64,7 @@ export async function printReceiptBluetooth(data: ReceiptData) {
 
     const encoder = new TextEncoder();
 
-    // Helper format baris struk (32 karakter standard thermal 58mm)
+
     const formatRow = (
       label: string,
       value: string | number,

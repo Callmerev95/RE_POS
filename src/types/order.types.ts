@@ -17,7 +17,7 @@ export interface Order {
   isSynced?: boolean;
 }
 
-// Props khusus untuk OrderFooter sesuai instruksi lo [cite: 2026-01-12]
+// Digunakan untuk menampilkan ringkasan di footer saat checkout
 export interface OrderFooterProps {
   count: number;
   label: string;

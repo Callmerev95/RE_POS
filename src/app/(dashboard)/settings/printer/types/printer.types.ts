@@ -6,7 +6,7 @@ export interface PrinterSettings {
   footer: string;
 }
 
-// Interface untuk Web Bluetooth agar tidak kena ESLint 'any' [cite: 2026-01-10]
+// Bluetooth API Types
 export interface BluetoothNavigator extends Navigator {
   bluetooth: {
     requestDevice: (options: {

@@ -16,15 +16,9 @@ interface Props {
 export function CategoriesClient({ initialData }: Props) {
   const router = useRouter();
 
-  // State untuk kontrol Modal
+ 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<CategoryUI | null>(null);
-
-  /**
-   * Fungsi handleSuccess dipanggil setelah Create atau Update berhasil.
-   * router.refresh() akan memberitahu Next.js untuk mengambil ulang data server (initialData)
-   * tanpa menghilangkan state client-side lainnya.
-   */
   const handleSuccess = () => {
     router.refresh();
   };

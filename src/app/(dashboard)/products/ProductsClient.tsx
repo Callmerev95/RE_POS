@@ -1,13 +1,10 @@
 "use client";
 
-// 1. UPDATE: Import dari folder local (components), bukan shared lagi
 import { ProductList } from "./components/ProductList";
 import { ProductHeader } from "./components/ProductHeader";
 import { CreateProductDialog } from "./components/CreateProductDialog";
 import { OrderFooter } from "@/app/(dashboard)/order/components/OrderFooter";
 import { CreditNote } from "@/app/(dashboard)/order/components/CreditNote";
-
-// 2. UPDATE: Hapus import Product lama, hanya pakai ProductUI
 import { ProductUI } from "./types/product.types";
 import { useProductLogic } from "./hooks/useProductLogic";
 
@@ -29,7 +26,7 @@ export function ProductsClient({ initialProducts, initialCategories }: Props) {
     handleCreated,
     handleUpdated,
     handleStatusChange,
-    handleDeactivate, // Ambil fungsi deactivate dari hook
+    handleDeactivate, 
   } = useProductLogic(initialProducts);
 
   return (
@@ -61,15 +58,14 @@ export function ProductsClient({ initialProducts, initialCategories }: Props) {
 
       <div className="flex-1 min-h-0 flex flex-col bg-white rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/50 overflow-hidden transition-all duration-500 hover:border-cyan-100">
         <div className="flex-1 overflow-y-auto custom-scrollbar relative bg-[#fafbfc] pb-12">
-          {/* 3. FIX: Buang semua 'as unknown as' dan casting lainnya */}
+        
           <ProductList
             products={products}
             onEdit={(p) => {
               setEditingProduct(p);
               setOpen(true);
             }}
-            // UBAH BAGIAN INI:
-            // Kita ambil properti id dari object p sebelum dikirim ke hook
+        
             onDeactivate={(p) => handleDeactivate(p.id)}
           />
         </div>

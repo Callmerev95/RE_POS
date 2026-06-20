@@ -42,7 +42,6 @@ export function OrderTable({ orders, loading }: Props) {
         </thead>
         <tbody className="divide-y divide-slate-50">
           {orders.map((o) => (
-            // Hapus safeParse di sini untuk performa. Validasi sudah dilakukan saat fetch [cite: 2026-01-12]
             <OrderRow key={o.id} order={o} />
           ))}
         </tbody>

@@ -65,7 +65,6 @@ export function RecentActivities({ orders }: RecentActivitiesProps) {
               className="relative flex items-center justify-between p-4 xl:p-5 bg-slate-50/50 hover:bg-white border border-transparent hover:border-slate-100 hover:shadow-xl hover:shadow-slate-200/40 rounded-4xl transition-all duration-300 group/item cursor-pointer active:scale-[0.99]"
             >
               {/* --- ULTIMATE TOOLTIP FIX --- */}
-              {/* Gunakan xl: untuk memastikan tooltip tidak muncul di tablet (744px) portrait */}
               <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-200 opacity-0 
                               hidden xl:group-hover/item:opacity-100 xl:block landscape:xl:block">
                 <div className="bg-slate-900 text-[8px] font-black text-white px-3 py-1.5 rounded-lg uppercase tracking-[0.2em] shadow-xl whitespace-nowrap border border-slate-700">

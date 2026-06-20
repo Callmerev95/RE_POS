@@ -6,7 +6,7 @@ export type CartItem = {
   price: number;
   qty: number;
   categoryType: "FOOD" | "DRINK";
-  notes?: string; // ✅ TAMBAHKAN INI
+  notes?: string; 
 };
 
 export type CartState = {

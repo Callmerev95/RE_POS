@@ -25,8 +25,7 @@ export function useOrderHistory() {
   const [method, setMethod] = useState<PaymentMethod | "all">("all");
   const [type, setType] = useState<OrderType | "all">("all");
 
-  // Fix: Menggunakan Date murni tanpa startOfDay/endOfDay di state awal
-  // agar format yyyy-MM-dd tidak melompat ke tanggal berikutnya.
+  // State untuk filter tanggal, default ke hari ini
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: new Date(),
@@ -39,7 +38,7 @@ export function useOrderHistory() {
     isFetching.current = true;
 
     setLoading(true);
-    setOrders([]); // Sesuai instruksi modifikasi parsial hanya bagian bermasalah
+    setOrders([]); // Reset orders saat mulai load untuk menghindari data lama muncul saat filter berubah
 
     try {
       const startStr = dateRange?.from

@@ -1,12 +1,10 @@
 "use client";
 
-// PENYESUAIAN: Import ProductRow dari folder yang sama
 import { ProductRow } from "./ProductRow";
-// PENYESUAIAN: Ambil tipe dari file product.types.ts yang baru
 import { ProductUI } from "../types/product.types";
 
 interface ProductListProps {
-  products: ProductUI[]; // Pakai ProductUI
+  products: ProductUI[]; 
   onEdit?: (p: ProductUI) => void;
   onDeactivate?: (p: ProductUI) => void;
   emptyMessage?: string;
@@ -32,9 +30,6 @@ export function ProductList({
       <table className="w-full text-sm border-separate border-spacing-0">
         <thead>
           <tr className="relative z-10">
-            {/* Gue ganti bg-[#f8fafc] ke bg-[#fafbfc] biar matching 
-               sama container utamanya (instruksi sebelumnya) 
-            */}
             <th className="sticky top-0 z-20 bg-[#fafbfc] px-6 py-4 text-left font-black text-slate-400 uppercase tracking-widest text-[9px] border-b border-slate-100">
               Info Produk
             </th>

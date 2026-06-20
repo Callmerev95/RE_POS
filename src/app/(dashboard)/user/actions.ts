@@ -14,7 +14,7 @@ const userSchema = z.object({
   password: z.string().optional().or(z.literal("")),
 });
 
-// ✅ Gunakan UserInput untuk menggantikan 'any' di parameter fungsi
+// Mendefinisikan tipe 'UserInput' berdasarkan skema validasi
 type UserInput = z.infer<typeof userSchema>;
 
 export async function getAllUsers() {
@@ -37,7 +37,7 @@ export async function getAllUsers() {
   }
 }
 
-// ✅ Ganti 'any' dengan 'UserInput'
+
 export async function createUser(rawDetails: UserInput) {
   try {
     const validated = userSchema.parse(rawDetails);
@@ -69,14 +69,14 @@ export async function createUser(rawDetails: UserInput) {
     revalidatePath("/user");
     return { success: true };
   } catch (error) {
-    // ✅ Perbaikan: Zod menggunakan '.issues' bukan '.errors'
+  
     if (error instanceof z.ZodError)
       return { success: false, error: error.issues[0].message };
     return { success: false, error: "Gagal membuat user" };
   }
 }
 
-// ✅ Ganti 'any' dengan 'UserInput'
+
 export async function updateUser(id: string, rawDetails: UserInput) {
   try {
     const validated = userSchema.parse(rawDetails);
@@ -108,7 +108,7 @@ export async function updateUser(id: string, rawDetails: UserInput) {
     revalidatePath("/user");
     return { success: true };
   } catch (error) {
-    // ✅ Perbaikan: Zod menggunakan '.issues'
+
     if (error instanceof z.ZodError)
       return { success: false, error: error.issues[0].message };
     return { success: false, error: "Gagal memperbarui data" };
@@ -121,7 +121,7 @@ export async function deleteUser(userId: string) {
     revalidatePath("/user");
     return { success: true };
   } catch {
-    // Menghapus 'error' variabel yang tidak digunakan
+
     return { success: false, error: "Gagal menghapus staf" };
   }
 }

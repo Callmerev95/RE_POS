@@ -5,7 +5,7 @@ import { z } from "zod";
  * Menggunakan Zod untuk validasi data dari Prisma JSON
  */
 export const OrderItemSchema = z.object({
-  // Kita gunakan .catch atau .optional() agar jika id tidak ada, aplikasi tetap jalan
+
   id: z.string().optional().default("unknown-id"), 
   name: z.string().default("Produk Tidak Dikenal"),
   price: z.number().default(0),
@@ -63,7 +63,6 @@ export type FilterPeriod = "HARI_INI" | "MINGGU_INI" | "BULAN_INI";
 
 /**
  * Interface untuk hasil perhitungan statistik (Stats)
- * Digunakan untuk props komponen visual nanti
  */
 export interface DashboardStats {
   activeRevenue: number;

@@ -103,8 +103,7 @@ export default function DashboardClient({
 
       <LowStockAlert items={lowStockItems} />
 
-      {/* 2. MASTER GRID LAYOUT - RESPONSIVE FIX FOR TABLET 744px */}
-      {/* md:grid-cols-2 memastikan di tablet (744px) layout jadi 2 kolom, bukan tumpuk 1 kolom */}
+      {/* 2. MASTER GRID LAYOUT */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-stretch">
 
         {/* Kolom Kiri: Finansial */}
@@ -120,15 +119,14 @@ export default function DashboardClient({
           </div>
         </div>
 
-        {/* Kolom Tengah: Sales Graph - Muncul di samping Finansial pada mode Tablet */}
+        {/* Kolom Tengah: Sales Graph  */}
         <div className="md:col-span-1 lg:col-span-5 min-w-0 flex flex-col">
-          {/* h-full & min-h-[400px] penting agar chart tidak kosong di tablet */}
           <div className="flex-1 min-h-100">
             <SalesChart data={stats.chartData} />
           </div>
         </div>
 
-        {/* Kolom Kanan: Top Performers - Melebar di Tablet agar enak dibaca */}
+        {/* Kolom Kanan: Top Performers */}
         <div className="md:col-span-2 lg:col-span-3 min-w-0 flex flex-col">
           <div className="flex-1">
             <TopMenus products={stats.topProducts} />
@@ -136,7 +134,7 @@ export default function DashboardClient({
         </div>
       </div>
 
-      {/* 3. FOOTER SECTION: Aktivitas Terbaru (Tooltip sudah di-fix di file RecentActivities.tsx) */}
+      {/* 3. FOOTER SECTION: Aktivitas Terbaru */}
       <RecentActivities orders={stats.recentOrders} />
     </div>
   );

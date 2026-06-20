@@ -127,7 +127,7 @@ export function useDashboardStats(
         .sort((a, b) => b.qty - a.qty)
         .slice(0, 5),
 
-      // FIX: Pakai filteredOrders agar orderan hari lain tidak muncul di list HARI INI
+      // --- 6. RECENT ORDERS ---
       recentOrders: [...filteredOrders]
         .sort(
           (a, b) =>

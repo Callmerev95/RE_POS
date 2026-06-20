@@ -92,7 +92,7 @@ export function GlobalSearch() {
       if (allResults.length > 0) {
         const item = allResults[selectedIndex];
         if (item) {
-          // FIX: Menghilangkan warning @typescript-eslint/no-unused-expressions
+          // Tipe Guard untuk membedakan antara Product dan OrderResult
           if ("price" in item) {
             handleSelectProduct(item as Product);
           } else {
@@ -134,9 +134,7 @@ export function GlobalSearch() {
       </div>
 
       {isOpen && query.length >= 2 && (
-        // FIX: rounded-[2rem] -> rounded-4xl
         <div className="absolute top-[calc(100%+12px)] left-0 w-full bg-white rounded-4xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-slate-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
-          {/* FIX: max-h-[400px] -> max-h-100 */}
           <div className="max-h-100 overflow-y-auto p-3">
 
             {products.length > 0 && (
@@ -194,7 +192,7 @@ function SearchItem({ icon, title, subtitle, rightIcon, isSelected }: SearchItem
   return (
     <div className={cn(
       "flex items-center gap-4 p-3 rounded-2xl cursor-pointer transition-all",
-      // FIX: Ganti slate-900 ke orange-50 agar lebih soft dan tidak mengalihkan fokus
+
       isSelected ? "bg-orange-50 ring-1 ring-orange-100" : "hover:bg-slate-50"
     )}>
       <div className={cn(

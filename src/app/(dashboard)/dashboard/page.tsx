@@ -51,7 +51,6 @@ export default async function DashboardPage() {
 
   return (
     <DashboardClient
-      // Casting aman tanpa menggunakan 'any'
       initialOrders={orders as unknown as OrderFromCloud[]}
       lowStockItems={lowStockRes.success && lowStockRes.data ? lowStockRes.data : []}
       profitData={profitData}

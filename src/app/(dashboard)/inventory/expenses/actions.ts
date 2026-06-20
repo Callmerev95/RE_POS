@@ -14,7 +14,7 @@ const ExpenseSchema = z.object({
   note: z.string().optional().nullable(),
 });
 
-// Define interface untuk input agar tidak pakai 'any'
+// Tipe input mentah sebelum validasi
 interface RawExpenseInput {
   name: string;
   amount: string | number;
@@ -94,7 +94,7 @@ export async function deleteExpense(id: string) {
   }
 }
 
-// ... (kode sebelumnya tetap ada)
+
 
 export async function updateExpense(id: string, rawData: RawExpenseInput) {
   try {

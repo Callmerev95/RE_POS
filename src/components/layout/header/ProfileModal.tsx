@@ -77,7 +77,6 @@ export function ProfileModal({ isOpen, onOpenChange }: ProfileModalProps) {
             });
 
             if (result.success) {
-                // Update context lokal agar UI langsung berubah permanen tanpa refresh
                 updateUserLocal({
                     image: previewImage || user.image
                 });

@@ -21,7 +21,7 @@ export function RestockForm({ ingredients }: RestockFormProps) {
   const [total, setTotal] = useState<string>("");
   const router = useRouter();
 
-  // Hitung estimasi harga per unit secara realtime
+  // Hitung estimasi harga per unit 
   const pricePerUnit = useMemo(() => {
     const q = parseFloat(qty);
     const t = parseFloat(total);

@@ -3,17 +3,11 @@
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { History, Download, CloudSync } from "lucide-react";
-
-// Store & Hooks
 import { useOrderHistory } from "./useOrderHistory";
 import { useOrderStore } from "@/store/useOrderStore";
-
-// Local Components (Pindah dari shared ke lokal fitur) [cite: 2026-01-12]
 import { OrderHeader } from "@/app/(dashboard)/order/components/OrderHeader";
 import { OrderTable } from "@/app/(dashboard)/order/components/OrderTable";
-import { OrderFooter } from "@/app/(dashboard)/order/components/OrderFooter"; // Tetap di shared karena generik
-
-// UI Components
+import { OrderFooter } from "@/app/(dashboard)/order/components/OrderFooter"; 
 import { PremiumHeader } from "@/components/shared/header/PremiumHeader";
 import { Button } from "@/components/ui/button";
 
@@ -34,7 +28,7 @@ export function OrderHistoryPage() {
   const orderIdFromUrl = searchParams.get("id");
   const openOrder = useOrderStore((s) => s.openOrder);
 
-  // Deep Link Handling: Buka detail order otomatis jika ada ID di URL
+  // Jika ada orderId di URL, buka order tersebut secara otomatis
   useEffect(() => {
     if (orderIdFromUrl) {
       openOrder(orderIdFromUrl);
@@ -89,7 +83,6 @@ export function OrderHistoryPage() {
           <OrderTable orders={orders} loading={loading} />
         </div>
 
-        {/* Gunakan komponen Footer yang sudah modular [cite: 2026-01-12] */}
         <OrderFooter
           count={orders.length}
           label="Transaksi Terbaru"
@@ -98,7 +91,7 @@ export function OrderHistoryPage() {
 
       {/* 4. Global Footer Label */}
       <p className="text-center text-[9px] text-slate-300 font-black uppercase tracking-[0.4em] shrink-0 pt-2 pb-1">
-        © 2026 Padhe Coffee POS • Premium Order Management System
+        © 2026 RE_POS • Premium Order Management System
       </p>
     </div>
   );

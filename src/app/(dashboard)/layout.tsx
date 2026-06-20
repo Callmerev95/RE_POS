@@ -4,9 +4,7 @@ import { AuthProvider } from "@/context/auth-context";
 import { Sidebar } from "@/components/shared/sidebar/Sidebar";
 import { Header } from "@/components/shared/header/Header";
 import { GlobalOrderDrawer } from "@/app/(dashboard)/order/components/GlobalOrderDrawer";
-// IMPORT BARU:
 
-// layout.tsx
 export default async function DashboardLayout({
   children,
 }: {
@@ -28,7 +26,6 @@ export default async function DashboardLayout({
             <Header />
           </div>
 
-          {/* FIX: Gunakan flex-1 dan min-h-0 agar children bisa menghitung tinggi dengan benar */}
           <div className="flex-1 relative overflow-y-auto p-8 flex flex-col min-h-0 custom-scrollbar">
             {children}
 

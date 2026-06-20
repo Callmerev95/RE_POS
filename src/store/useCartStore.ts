@@ -113,7 +113,7 @@ export const useCartStore = create<CartState & CartActions>()((set, get) => ({
     })),
 
   /**
-   * ✅ UPDATE: Menambahkan pembersihan customerName dan activeOrderId.
+   * UPDATE: Menambahkan pembersihan customerName dan activeOrderId.
    * Ini memastikan setelah checkout sukses, UI kembali ke kondisi bersih total.
    */
   clearCart: () =>

@@ -14,7 +14,6 @@ export async function getCurrentUser() {
 
   if (!session) return null;
 
-  // Check expiry (optional but recommended)
   if (session.expiresAt && session.expiresAt < new Date()) {
     return null;
   }

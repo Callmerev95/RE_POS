@@ -13,13 +13,13 @@ const inter = Inter({
 
 
 export const metadata: Metadata = {
-  title: "Coffee POS",
+  title: "PadheCoffee",
   description: "Point of Sale Offline First",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Coffee POS",
+    title: "PadheCoffee",
   },
 };
 

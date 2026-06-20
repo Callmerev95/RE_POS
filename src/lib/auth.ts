@@ -11,6 +11,6 @@ export async function getCurrentUser() {
     include: { user: true },
   });
 
-  return session?.user ?? null; // user.role HARUS ADA
+  return session?.user ?? null; // Return user if session exists, otherwise return null
 }
 

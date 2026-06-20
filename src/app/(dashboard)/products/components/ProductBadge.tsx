@@ -13,7 +13,7 @@ type ProductBadgeProps = {
 };
 
 export function ProductBadge({ variant, value, color = "slate" }: ProductBadgeProps) {
-  // Gaya dasar yang disesuaikan dengan desain premium (uppercase + tracking)
+
   const base = "px-3 py-1 rounded-xl text-[9px] font-black uppercase tracking-wider border-none shadow-sm transition-all duration-300";
 
   if (variant === "status") {
@@ -30,7 +30,6 @@ export function ProductBadge({ variant, value, color = "slate" }: ProductBadgePr
     );
   }
 
-  // Handle kategori
   const styles = CATEGORY_COLOR_STYLES[color];
 
   return (

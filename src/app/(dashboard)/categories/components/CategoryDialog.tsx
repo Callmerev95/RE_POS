@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { createCategory, updateCategory } from "@/app/(dashboard)/categories/actions";
 import { toast } from "sonner";
 import { Tag, Check } from "lucide-react";
-import { motion } from "framer-motion"; // Konsistensi import
+import { motion } from "framer-motion"; 
 import { CategoryUI } from "../types/category.types";
 
 interface CategoryDialogProps {

@@ -38,7 +38,7 @@ export default function KitchenPage() {
   const [loading, setLoading] = useState(true);
   const [station, setStation] = useState<StationMode>("ALL");
 
-  // ✅ NEW: State untuk nge-block re-fetch pas lagi transisi biar gak flickering [cite: 2026-01-12]
+  // State to track which order is currently being processed (to prevent concurrent updates)
   const [isProcessing, setIsProcessing] = useState<string | null>(null);
 
   const prevOrdersCount = useRef<number>(0);
@@ -73,7 +73,7 @@ export default function KitchenPage() {
   }, []);
 
   const fetchOrders = useCallback(async () => {
-    // ✅ JANGAN FETCH kalau lagi ada aksi (biar gak bentrok data lama vs baru) [cite: 2026-01-12]
+    // Prevent fetching if an order is currently being processed to avoid race conditions
     if (isProcessing) return;
 
     try {
@@ -124,7 +124,7 @@ export default function KitchenPage() {
     } finally {
       setLoading(false);
     }
-  }, [isProcessing]); // Re-bind saat processing state berubah [cite: 2026-01-12]
+  }, [isProcessing]); 
 
   useEffect(() => {
     let isMounted = true;
@@ -180,7 +180,7 @@ export default function KitchenPage() {
   };
 
   const handleStatusChange = async (id: string) => {
-    // ✅ SAT-SET: Langsung kunci ID ini dan trigger UI hilang [cite: 2026-01-12]
+    // Block further actions while processing this order
     setIsProcessing(id);
 
     startTransition(() => {
@@ -199,7 +199,7 @@ export default function KitchenPage() {
       toast.error("Gagal update");
       void fetchOrders();
     } finally {
-      // ✅ Berikan jeda 1 detik agar sinkronisasi DB beres baru boleh fetch lagi [cite: 2026-01-12]
+      // Unblock after a short delay to allow UI updates to settle
       setTimeout(() => setIsProcessing(null), 1000);
     }
   };
